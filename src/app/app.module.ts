@@ -17,7 +17,7 @@ import { SongService } from './service/song.service';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [
     provideHttpClient(),
