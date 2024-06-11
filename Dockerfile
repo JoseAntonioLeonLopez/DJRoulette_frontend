@@ -1,29 +1,37 @@
-# Utiliza una imagen de Node como base
-FROM node:20.10.0 AS builder
+# Usamos una imagen de Node.js como base
+FROM node:latest as build
 
-# Establece el directorio de trabajo en /app
+# Establecemos el directorio de trabajo en /app
 WORKDIR /app
 
-# Copia los archivos package.json y package-lock.json para instalar las dependencias
+# Copiamos el archivo package.json y package-lock.json
 COPY package*.json ./
 
-# Instala las dependencias
+# Instalamos las dependencias
 RUN npm install
 
-# Copia todos los archivos de la aplicación al contenedor
+# Copiamos el resto de los archivos de la aplicación
 COPY . .
 
-# Compila la aplicación Angular para producción
-RUN npm run build --prod
+# Construimos la aplicación Angular
+RUN npm run build
 
-# Utiliza una imagen ligera de Nginx como base para servir la aplicación
-FROM nginx:latest
+# Segunda etapa del Dockerfile para servir la aplicación Angular
 
-# Copia los archivos de construcción de la aplicación Angular desde el constructor al directorio de trabajo de Nginx
-COPY --from=builder /app/dist/* /usr/share/nginx/html/
+# Usamos una imagen de servidor web ligero, por ejemplo, http-server
+FROM node:latest as serve
 
-# Exponer el puerto 80 para que Render.com pueda acceder a la aplicación
+# Instalamos http-server de forma global
+RUN npm install -g http-server
+
+# Establecemos el directorio de trabajo en /app/dist
+WORKDIR /app/dist
+
+# Copiamos los archivos construidos de la etapa anterior
+COPY --from=build /app/dist .
+
+# Exponemos el puerto 80 (puedes cambiarlo si es necesario)
 EXPOSE 80
 
-# Comando por defecto para iniciar Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Comando para iniciar http-server y servir la aplicación Angular
+CMD ["http-server", "-c-1"]
