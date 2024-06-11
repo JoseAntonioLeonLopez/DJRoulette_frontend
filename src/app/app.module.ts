@@ -7,13 +7,15 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { provideHttpClient } from '@angular/common/http';
 import { LandingComponent } from './pages/landing/landing.component';
 import { SongService } from './service/song.service';
+import { RouletteComponent } from './components/roulette/roulette.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingComponent,
     AdminComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    RouletteComponent
   ],
   imports: [
     BrowserModule,
