@@ -1,8 +1,17 @@
+.roulette-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .roulette-container {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19); 
 }
 
 .spin-button {

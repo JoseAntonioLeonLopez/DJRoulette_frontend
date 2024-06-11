@@ -1,0 +1,9 @@
+<div class="modal" [class.show]="show" (click)="close()">
+    <div class="modal-contentbg-gray-100 p-4 flex justify-center items-center h-screen" (click)="$event.stopPropagation()">
+      <div class="bg-white p-8 rounded-lg shadow-md w-80">
+        <img [src]="song?.image" [alt]="song?.title" class="w-64 h-64 mx-auto rounded-lg mb-4 shadow-lg shadow-teal-50">
+        <h2 class="text-xl font-semibold text-center">{{ song?.title }}</h2>
+        <p class="text-gray-600 text-sm text-center">{{ song?.artist }}</p>
+      </div>
+    </div>
+</div>

@@ -8,6 +8,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { LandingComponent } from './pages/landing/landing.component';
 import { SongService } from './service/song.service';
 import { RouletteComponent } from './components/roulette/roulette.component';
+import { SongModalComponent } from './components/song-modal/song-modal.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { RouletteComponent } from './components/roulette/roulette.component';
     LandingComponent,
     AdminComponent,
     NotFoundComponent,
-    RouletteComponent
+    RouletteComponent,
+    SongModalComponent
   ],
   imports: [
     BrowserModule,

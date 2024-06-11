@@ -17,13 +17,19 @@ export class LandingComponent implements OnInit {
   }
 
   loadSongs(): void {
-    this.songService.getAll().subscribe(
-      (songs: Song[]) => {
-        this.songs = songs;
-      },
-      (error) => {
-        console.error('Error loading songs', error);
-      }
-    );
+    const savedSongs = sessionStorage.getItem('songs');
+    if (savedSongs) {
+      this.songs = JSON.parse(savedSongs);
+    } else {
+      this.songService.getAll().subscribe(
+        (songs: Song[]) => {
+          this.songs = songs;
+          sessionStorage.setItem('songs', JSON.stringify(songs));
+        },
+        (error) => {
+          console.error('Error loading songs', error);
+        }
+      );
+    }
   }
 }

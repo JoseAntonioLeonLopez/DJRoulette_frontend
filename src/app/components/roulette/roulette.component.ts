@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { SongModalComponent } from '../song-modal/song-modal.component'; // Asegúrate de importar correctamente
 
 @Component({
   selector: 'app-roulette',
@@ -7,7 +8,8 @@ import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChang
 })
 export class RouletteComponent implements OnInit, OnChanges {
   @ViewChild('rouletteCanvas', { static: true }) rouletteCanvas!: ElementRef<HTMLCanvasElement>;
-  @Input('segmentsArray') segmentsArray: any[] = []; // Propiedad de entrada con signatura de índice
+  @ViewChild(SongModalComponent) songModal!: SongModalComponent;
+  @Input('segmentsArray') segmentsArray: any[] = [];
   private context!: CanvasRenderingContext2D;
   private segmentAngle: number = 0;
   private currentAngle: number = 0;
@@ -70,16 +72,16 @@ export class RouletteComponent implements OnInit, OnChanges {
     this.context.translate(250, 250);
     this.context.rotate(startAngle + this.segmentAngle / 2);
     this.context.textAlign = 'right';
-    this.context.fillStyle = '#FFFFFF'; // Color del texto
+    this.context.fillStyle = '#FFFFFF';
 
     const text1 = this.segmentsArray[index].title;
 
-    this.context.font = `${this.maxFontSize}px Arial`;
+    this.context.font = `${this.maxFontSize}px Verdana`;
     const textWidth1 = this.context.measureText(text1).width;
 
     const fontSize = this.calculateFontSize(Math.max(textWidth1));
 
-    this.context.font = `${fontSize}px Arial`;
+    this.context.font = `${fontSize}px Verdana`;
 
     this.context.fillText(text1, 200, 0);
     this.context.restore();
@@ -97,7 +99,6 @@ export class RouletteComponent implements OnInit, OnChanges {
   }
 
   private getColor(index: number): string {
-    // Puedes personalizar los colores según el índice
     return index % 2 === 0 ? '#FF0000' : '#000000';
   }
 
@@ -112,11 +113,11 @@ export class RouletteComponent implements OnInit, OnChanges {
   }
 
   spin(): void {
-    if (this.isSpinning) return;  // Evita múltiples clics en el botón de girar
+    if (this.isSpinning) return;
 
     this.isSpinning = true;
-    this.angularVelocity = Math.random() * 0.2 + 0.3; // Velocidad inicial aleatoria
-    this.angularAcceleration = -0.0030; // Aceleración negativa para frenado
+    this.angularVelocity = Math.random() * 0.2 + 0.3;
+    this.angularAcceleration = -0.0025;
 
     const spinStep = () => {
       this.currentAngle += this.angularVelocity;
@@ -137,9 +138,19 @@ export class RouletteComponent implements OnInit, OnChanges {
         this.angularVelocity = 0;
         this.angularAcceleration = 0;
         cancelAnimationFrame(this.spinTimeout);
+        this.showResult();
       }
     };
 
     spinStep();
   }
+
+  private showResult(): void {
+    const normalizedAngle = this.currentAngle % (2 * Math.PI);  // Normalizar el ángulo
+    const adjustedAngle = (2 * Math.PI - normalizedAngle + (3 * Math.PI / 2)) % (2 * Math.PI); // Ajustar el ángulo para que la flecha esté en la parte inferior
+    const segmentIndex = Math.floor(adjustedAngle / this.segmentAngle) % this.segmentsArray.length;
+    const song = this.segmentsArray[segmentIndex];
+    this.songModal.open(song);
+  }
+  
 }
