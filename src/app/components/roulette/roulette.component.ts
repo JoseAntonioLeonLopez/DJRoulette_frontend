@@ -18,9 +18,9 @@ export class RouletteComponent implements OnInit, OnChanges {
   private spinTimeout: any;
   private isSpinning: boolean = false;
 
-  private readonly maxFontSize: number = 16;
-  private readonly minFontSize: number = 8;
-  private readonly maxTextWidth: number = 200;
+  private readonly maxFontSize: number = 12; // Tamaño máximo de la fuente reducido
+  private readonly minFontSize: number = 6; // Tamaño mínimo de la fuente reducido
+  private readonly maxTextWidth: number = 100; // Ancho máximo del texto reducido
 
   constructor() {}
 
@@ -48,7 +48,7 @@ export class RouletteComponent implements OnInit, OnChanges {
   }
 
   private drawRoulette(): void {
-    this.context.clearRect(0, 0, 500, 500);
+    this.context.clearRect(0, 0, 300, 300); // Ajustar al nuevo tamaño del canvas
     for (let i = 0; i < this.segmentsArray.length; i++) {
       this.drawSegment(i);
     }
@@ -60,8 +60,8 @@ export class RouletteComponent implements OnInit, OnChanges {
     const color = this.getColor(index);
 
     this.context.beginPath();
-    this.context.moveTo(250, 250);
-    this.context.arc(250, 250, 250, startAngle, endAngle);
+    this.context.moveTo(150, 150); // Ajustar al nuevo tamaño del canvas
+    this.context.arc(150, 150, 150, startAngle, endAngle); // Ajustar al nuevo tamaño del canvas
     this.context.closePath();
     this.context.fillStyle = color;
     this.context.fill();
@@ -69,21 +69,24 @@ export class RouletteComponent implements OnInit, OnChanges {
 
     // Dibujar el texto
     this.context.save();
-    this.context.translate(250, 250);
+    this.context.translate(150, 150); // Ajustar al nuevo tamaño del canvas
     this.context.rotate(startAngle + this.segmentAngle / 2);
-    this.context.textAlign = 'right';
+    this.context.textAlign = 'center';
+    this.context.textBaseline = 'middle';
     this.context.fillStyle = '#FFFFFF';
 
-    const text1 = this.segmentsArray[index].title;
+    const text = this.segmentsArray[index].title;
 
-    this.context.font = `${this.maxFontSize}px Verdana`;
-    const textWidth1 = this.context.measureText(text1).width;
+    this.context.font = `bold ${this.maxFontSize}px 'Montserrat', sans-serif`;
+    const textWidth = this.context.measureText(text).width;
 
-    const fontSize = this.calculateFontSize(Math.max(textWidth1));
+    const fontSize = this.calculateFontSize(Math.max(textWidth));
+    this.context.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
 
-    this.context.font = `${fontSize}px Verdana`;
-
-    this.context.fillText(text1, 200, 0);
+    // Calcular la posición del texto de manera que esté centrado
+    const radius = 150; // Radio de la ruleta
+    const textRadius = radius * 0.6; // Ajustar este valor según sea necesario para centrar el texto mejor
+    this.context.fillText(text, textRadius, 0); // Ajustar la posición del texto
     this.context.restore();
   }
 
@@ -105,9 +108,9 @@ export class RouletteComponent implements OnInit, OnChanges {
   private drawArrow(color: string = '#FFD100'): void {
     this.context.fillStyle = color;
     this.context.beginPath();
-    this.context.moveTo(240, 0);
-    this.context.lineTo(260, 0);
-    this.context.lineTo(250, 20);
+    this.context.moveTo(140, 0); // Ajustar al nuevo tamaño del canvas
+    this.context.lineTo(160, 0); // Ajustar al nuevo tamaño del canvas
+    this.context.lineTo(150, 20); // Ajustar al nuevo tamaño del canvas
     this.context.closePath();
     this.context.fill();
   }
@@ -122,14 +125,14 @@ export class RouletteComponent implements OnInit, OnChanges {
     const spinStep = () => {
       this.currentAngle += this.angularVelocity;
       this.angularVelocity += this.angularAcceleration;
-      this.context.clearRect(0, 0, 500, 500);
+      this.context.clearRect(0, 0, 300, 300); // Ajustar al nuevo tamaño del canvas
       this.context.save();
-      this.context.translate(250, 250);
+      this.context.translate(150, 150); // Ajustar al nuevo tamaño del canvas
       this.context.rotate(this.currentAngle);
-      this.context.translate(-250, -250);
+      this.context.translate(-150, -150); // Ajustar al nuevo tamaño del canvas
       this.drawRoulette();
       this.context.restore();
-      this.drawArrow(); 
+      this.drawArrow();
 
       if (this.angularVelocity > 0) {
         this.spinTimeout = requestAnimationFrame(spinStep);
@@ -152,5 +155,4 @@ export class RouletteComponent implements OnInit, OnChanges {
     const song = this.segmentsArray[segmentIndex];
     this.songModal.open(song);
   }
-  
 }
