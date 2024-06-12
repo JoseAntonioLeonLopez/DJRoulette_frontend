@@ -1,3 +1,7 @@
-<div>
-    <app-roulette [segmentsArray]="songs"></app-roulette>
+<div *ngIf="loading" class="flex justify-center items-center h-screen">
+  <div class="animate-spin rounded-full h-32 w-32 border-t-4 border-blue-500"></div>
+</div>
+
+<div *ngIf="!loading">
+  <app-roulette [segmentsArray]="songs"></app-roulette>
 </div>
