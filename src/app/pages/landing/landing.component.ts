@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SongService } from '../../service/song.service';
 import { Song } from '../../models/song.model';
 
@@ -7,9 +7,10 @@ import { Song } from '../../models/song.model';
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css']
 })
-export class LandingComponent implements OnInit {
+export class LandingComponent {
   songs: Song[] = [];
-  loading: boolean = true;  // Añadir la propiedad loading
+  loading: boolean = true;
+  isModalOpen: boolean = false; // Agregar esta propiedad para controlar el estado del modal
 
   constructor(private songService: SongService) {}
 
@@ -21,17 +22,17 @@ export class LandingComponent implements OnInit {
     const savedSongs = sessionStorage.getItem('songs');
     if (savedSongs) {
       this.songs = JSON.parse(savedSongs);
-      this.loading = false;  // Datos cargados, ocultar el spinner
+      this.loading = false;
     } else {
       this.songService.getAll().subscribe(
         (songs: Song[]) => {
           this.songs = songs;
           sessionStorage.setItem('songs', JSON.stringify(songs));
-          this.loading = false;  // Datos cargados, ocultar el spinner
+          this.loading = false;
         },
         (error) => {
           console.error('Error loading songs', error);
-          this.loading = false;  // En caso de error, ocultar el spinner
+          this.loading = false;
         }
       );
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { SongModalComponent } from '../song-modal/song-modal.component'; // Asegúrate de importar correctamente
 
 @Component({
@@ -10,6 +10,7 @@ export class RouletteComponent implements OnInit, OnChanges {
   @ViewChild('rouletteCanvas', { static: true }) rouletteCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild(SongModalComponent) songModal!: SongModalComponent;
   @Input('segmentsArray') segmentsArray: any[] = [];
+  @Input() isModalOpen: boolean = false; // Recibir el estado del modal como Input
   private context!: CanvasRenderingContext2D;
   private segmentAngle: number = 0;
   private currentAngle: number = 0;
@@ -146,6 +147,14 @@ export class RouletteComponent implements OnInit, OnChanges {
     };
 
     spinStep();
+  }
+
+  openModal(): void {
+    this.isModalOpen = true;
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
   }
 
   private showResult(): void {

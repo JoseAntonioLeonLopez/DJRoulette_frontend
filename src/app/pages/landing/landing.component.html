@@ -3,5 +3,7 @@
 </div>
 
 <div *ngIf="!loading">
-  <app-roulette [segmentsArray]="songs"></app-roulette>
+  <app-roulette [segmentsArray]="songs" [isModalOpen]="isModalOpen"></app-roulette>
 </div>
+
+<app-song-modal [isModalOpen]="isModalOpen"></app-song-modal>
