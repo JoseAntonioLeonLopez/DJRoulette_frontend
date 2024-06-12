@@ -1,4 +1,4 @@
-import { NgModule, provideZoneChangeDetection } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +9,7 @@ import { LandingComponent } from './pages/landing/landing.component';
 import { SongService } from './service/song.service';
 import { RouletteComponent } from './components/roulette/roulette.component';
 import { SongModalComponent } from './components/song-modal/song-modal.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -17,11 +18,12 @@ import { SongModalComponent } from './components/song-modal/song-modal.component
     AdminComponent,
     NotFoundComponent,
     RouletteComponent,
-    SongModalComponent
+    SongModalComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FontAwesomeModule,
   ],
   providers: [
     provideHttpClient(),
