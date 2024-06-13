@@ -23,7 +23,7 @@ export class RouletteComponent implements OnInit, OnChanges {
   private readonly minFontSize: number = 6; // Tamaño mínimo de la fuente reducido
   private readonly maxTextWidth: number = 100; // Ancho máximo del texto reducido
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     if (this.rouletteCanvas.nativeElement) {
@@ -33,7 +33,7 @@ export class RouletteComponent implements OnInit, OnChanges {
       this.drawArrow();
     }
   }
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['segmentsArray'] && this.context) {
       this.updateSegments();
@@ -41,7 +41,7 @@ export class RouletteComponent implements OnInit, OnChanges {
       this.drawArrow();
     }
   }
-  
+
   private updateSegments(): void {
     if (this.segmentsArray.length > 0) {
       this.segmentAngle = 2 * Math.PI / this.segmentsArray.length;
@@ -49,7 +49,7 @@ export class RouletteComponent implements OnInit, OnChanges {
       this.segmentAngle = 0;
     }
   }
-  
+
   private drawRoulette(): void {
     if (this.context) {
       this.context.clearRect(0, 0, 300, 300);
@@ -154,16 +154,16 @@ export class RouletteComponent implements OnInit, OnChanges {
   }
 
   private showResult(): void {
-  const normalizedAngle = this.currentAngle % (2 * Math.PI);  
-  const adjustedAngle = (2 * Math.PI - normalizedAngle + (3 * Math.PI / 2)) % (2 * Math.PI); 
-  const segmentIndex = Math.floor(adjustedAngle / this.segmentAngle) % this.segmentsArray.length;
-  const song = this.segmentsArray[segmentIndex];
-  
-  // Asegurarse de que songModal esté definido antes de intentar abrir el modal
-  if (this.songModal) {
-    this.songModal.open(song);
-  } else {
-    console.error('Error: songModal not initialized.');
+    const normalizedAngle = this.currentAngle % (2 * Math.PI);
+    const adjustedAngle = (2 * Math.PI - normalizedAngle + (3 * Math.PI / 2)) % (2 * Math.PI);
+    const segmentIndex = Math.floor(adjustedAngle / this.segmentAngle) % this.segmentsArray.length;
+    const song = this.segmentsArray[segmentIndex];
+
+    // Asegurarse de que songModal esté definido antes de intentar abrir el modal
+    if (this.songModal) {
+      this.songModal.open(song);
+    } else {
+      console.error('Error: songModal not initialized.');
+    }
   }
-}
 }
