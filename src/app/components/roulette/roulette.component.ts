@@ -26,20 +26,22 @@ export class RouletteComponent implements OnInit, OnChanges {
   constructor() {}
 
   ngOnInit(): void {
-    this.context = this.rouletteCanvas.nativeElement.getContext('2d')!;
-    this.updateSegments();
-    this.drawRoulette();
-    this.drawArrow();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['segmentsArray']) {
+    if (this.rouletteCanvas.nativeElement) {
+      this.context = this.rouletteCanvas.nativeElement.getContext('2d')!;
       this.updateSegments();
       this.drawRoulette();
       this.drawArrow();
     }
   }
-
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['segmentsArray'] && this.context) {
+      this.updateSegments();
+      this.drawRoulette();
+      this.drawArrow();
+    }
+  }
+  
   private updateSegments(): void {
     if (this.segmentsArray.length > 0) {
       this.segmentAngle = 2 * Math.PI / this.segmentsArray.length;
@@ -47,11 +49,13 @@ export class RouletteComponent implements OnInit, OnChanges {
       this.segmentAngle = 0;
     }
   }
-
+  
   private drawRoulette(): void {
-    this.context.clearRect(0, 0, 300, 300); // Ajustar al nuevo tamaño del canvas
-    for (let i = 0; i < this.segmentsArray.length; i++) {
-      this.drawSegment(i);
+    if (this.context) {
+      this.context.clearRect(0, 0, 300, 300);
+      for (let i = 0; i < this.segmentsArray.length; i++) {
+        this.drawSegment(i);
+      }
     }
   }
 
@@ -149,19 +153,17 @@ export class RouletteComponent implements OnInit, OnChanges {
     spinStep();
   }
 
-  openModal(): void {
-    this.isModalOpen = true;
-  }
-
-  closeModal(): void {
-    this.isModalOpen = false;
-  }
-
   private showResult(): void {
-    const normalizedAngle = this.currentAngle % (2 * Math.PI);  // Normalizar el ángulo
-    const adjustedAngle = (2 * Math.PI - normalizedAngle + (3 * Math.PI / 2)) % (2 * Math.PI); // Ajustar el ángulo para que la flecha esté en la parte inferior
-    const segmentIndex = Math.floor(adjustedAngle / this.segmentAngle) % this.segmentsArray.length;
-    const song = this.segmentsArray[segmentIndex];
+  const normalizedAngle = this.currentAngle % (2 * Math.PI);  
+  const adjustedAngle = (2 * Math.PI - normalizedAngle + (3 * Math.PI / 2)) % (2 * Math.PI); 
+  const segmentIndex = Math.floor(adjustedAngle / this.segmentAngle) % this.segmentsArray.length;
+  const song = this.segmentsArray[segmentIndex];
+  
+  // Asegurarse de que songModal esté definido antes de intentar abrir el modal
+  if (this.songModal) {
     this.songModal.open(song);
+  } else {
+    console.error('Error: songModal not initialized.');
   }
+}
 }
