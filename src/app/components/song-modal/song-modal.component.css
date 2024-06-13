@@ -6,7 +6,7 @@
   height: 100%;
   display: none;
   justify-content: center;
-  align-items: center;/* Fondo semi-transparente */
+  align-items: center;
 }
 
 .modal.show {
