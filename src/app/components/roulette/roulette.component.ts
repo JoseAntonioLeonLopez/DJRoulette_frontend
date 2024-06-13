@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { SongModalComponent } from '../song-modal/song-modal.component'; // Asegúrate de importar correctamente
+import { Song } from '../../models/song.model';
 
 @Component({
   selector: 'app-roulette',
@@ -9,8 +10,8 @@ import { SongModalComponent } from '../song-modal/song-modal.component'; // Aseg
 export class RouletteComponent implements OnInit, OnChanges {
   @ViewChild('rouletteCanvas', { static: true }) rouletteCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild(SongModalComponent) songModal!: SongModalComponent;
-  @Input('segmentsArray') segmentsArray: any[] = [];
-  @Input() isModalOpen: boolean = false; // Recibir el estado del modal como Input
+  @Input() segmentsArray: any[] = [];
+  @Input() isModalOpen: boolean = false;
   private context!: CanvasRenderingContext2D;
   private segmentAngle: number = 0;
   private currentAngle: number = 0;
@@ -153,11 +154,15 @@ export class RouletteComponent implements OnInit, OnChanges {
     spinStep();
   }
 
+  showSpinButton(): boolean {
+    return !this.isModalOpen && !this.isSpinning;
+  }
+
   private showResult(): void {
     const normalizedAngle = this.currentAngle % (2 * Math.PI);
     const adjustedAngle = (2 * Math.PI - normalizedAngle + (3 * Math.PI / 2)) % (2 * Math.PI);
     const segmentIndex = Math.floor(adjustedAngle / this.segmentAngle) % this.segmentsArray.length;
-    const song = this.segmentsArray[segmentIndex];
+    const song: Song = this.segmentsArray[segmentIndex];
 
     // Asegurarse de que songModal esté definido antes de intentar abrir el modal
     if (this.songModal) {

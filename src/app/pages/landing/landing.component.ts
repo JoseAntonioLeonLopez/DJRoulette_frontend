@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { SongService } from '../../service/song.service';
 import { Song } from '../../models/song.model';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-landing',
@@ -15,7 +14,7 @@ export class LandingComponent implements OnInit {
 
   constructor(
     private songService: SongService,
-    private cdr: ChangeDetectorRef // Inyectar ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -27,19 +26,19 @@ export class LandingComponent implements OnInit {
     if (savedSongs) {
       this.songs = JSON.parse(savedSongs);
       this.loading = false;
-      this.cdr.detectChanges(); // Forzar la detección de cambios
+      this.cdr.detectChanges();
     } else {
       this.songService.getAll().subscribe(
         (songs: Song[]) => {
           this.songs = songs;
           sessionStorage.setItem('songs', JSON.stringify(songs));
           this.loading = false;
-          this.cdr.detectChanges(); // Forzar la detección de cambios
+          this.cdr.detectChanges();
         },
         (error) => {
           console.error('Error loading songs', error);
           this.loading = false;
-          this.cdr.detectChanges(); // Forzar la detección de cambios
+          this.cdr.detectChanges();
         }
       );
     }

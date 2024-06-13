@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Song } from '../../models/song.model';
 
 @Component({
   selector: 'app-song-modal',
@@ -7,19 +8,18 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./song-modal.component.css']
 })
 export class SongModalComponent {
-  @Input() song: any;
-  @Input() isModalOpen: boolean = false; // Definir isModalOpen como una propiedad de entrada
-  show = false;
+  @Input() song: Song | undefined = undefined; // Inicializar con undefined
+  @Input() isModalOpen: boolean = false;
   faTimes = faTimes;
   @Output() modalClosed = new EventEmitter<boolean>();
 
   close(): void {
-    this.show = false;
+    this.isModalOpen = false;
     this.modalClosed.emit(false);
   }
-
-  open(song: any): void {
+  
+  open(song: Song): void {
     this.song = song;
-    this.show = true;
+    this.isModalOpen = true;
   }
 }
