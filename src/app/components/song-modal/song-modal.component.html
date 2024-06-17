@@ -1,12 +1,10 @@
-<div class="modal" [class.show]="isModalOpen" (click)="close()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <div class="bg-white p-4 rounded-lg shadow-md w-80 relative">
-      <img *ngIf="song?.image" [src]="song?.image" [alt]="song?.title" class="w-64 h-64 mx-auto rounded-lg mb-4 shadow-lg shadow-teal-50">
-      <h2 class="text-xl font-semibold text-center">{{ song?.title }}</h2>
-      <p class="text-gray-600 text-sm text-center">{{ song?.artist }}</p>
-      <button class="close-button top-full right-0 mr-4 mt-4" (click)="close()">
-        <fa-icon [icon]="faTimes"></fa-icon>
-      </button>
-    </div>
+<div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 transition-opacity z-50" [class.hidden]="!isModalOpen" (click)="close()">
+  <div class="bg-white p-4 rounded-lg shadow-md w-80 relative" (click)="$event.stopPropagation()">
+    <button class="absolute top-2 right-3 text-gray-600 hover:text-gray-900" (click)="close()">
+      <fa-icon [icon]="faTimes"></fa-icon>
+    </button>
+    <img *ngIf="song?.image" [src]="song?.image" [alt]="song?.title" class="w-64 h-64 mx-auto rounded-lg mb-4 shadow-lg shadow-teal-50">
+    <h2 class="text-xl font-semibold text-center">{{ song?.title }}</h2>
+    <p class="text-gray-600 text-sm text-center">{{ song?.artist }}</p>
   </div>
 </div>

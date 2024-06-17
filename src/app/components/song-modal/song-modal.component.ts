@@ -8,7 +8,7 @@ import { Song } from '../../models/song.model';
   styleUrls: ['./song-modal.component.css']
 })
 export class SongModalComponent {
-  @Input() song: Song | undefined = undefined; // Inicializar con undefined
+  @Input() song: Song | undefined = undefined;
   @Input() isModalOpen: boolean = false;
   faTimes = faTimes;
   @Output() modalClosed = new EventEmitter<boolean>();
